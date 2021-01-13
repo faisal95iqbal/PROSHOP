@@ -63,3 +63,33 @@ export const getMyOrders = asyncHandler( async ( req, res ) => {
     const orders = await Order.find( { user: req.user._id } )
     res.json(orders)
 } )
+
+//@desc get all orders
+//@route GET /api/orders
+//@access private admin
+export const getOrders = asyncHandler( async ( req, res ) => {
+    const orders = await Order.find( {} ).populate('user','id name')
+    if ( orders ) {
+        res.json(orders)
+    } else {
+        res.status( 404 )
+        throw new Error('Orders not found')
+    }  
+} )
+
+//@desc update order to delivered
+//@route GET /api/orders/:d/deliver
+//@access private admin
+export const updateOrderToDelivered = asyncHandler( async ( req, res ) => {
+    const order = await Order.findById( req.params.id )
+
+    if ( order ) {
+        order.isDelivered = true
+        order.deliveredAt = Date.now()
+        const updatedOrder = await order.save()
+        res.json(updatedOrder)
+    } else {
+        res.status( 404 )
+        throw new Error('Order Not Found')
+    }
+} )
