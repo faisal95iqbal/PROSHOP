@@ -13,13 +13,17 @@ const reviewSchema = mongoose.Schema( {
         type: String,
         required:true,
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 }, {
     timestamps:true
 })
 
 
 const productSchema = mongoose.Schema( {
-     user: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
